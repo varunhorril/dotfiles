@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+brew_path=$(brew --prefix)
+
+# Add `Homebrew` binaries to the PATH
+export PATH="$brew_path/bin:$PATH"
+export PATH="$brew_path/sbin:$PATH"
+
+# Golang
+export GOROOT=$brew_path/opt/go/libexec
+export GOPATH=$HOME/projects/go
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOPATH
+export PATH=$PATH:$GOROOT/bin
+export PATH=$PATH:$GOBIN
+
+# Python 3.8
+export PATH="$brew_path/opt/python@3.8/libexec/bin:$PATH"
+
+# ruby 2.7
+export PATH="$brew_path/opt/ruby/libexec/bin:$PATH"
+export PATH="$brew_path/lib/ruby/gems/bin:$PATH"
+
+# cURL
+export PATH="$brew_path/opt/curl/bin:$PATH"
+
+# Update path for gnu find, coreutils, make & sed on darwin
+export PATH="$brew_path/opt/coreutils/libexec/gnubin:$PATH"
+export PATH="$brew_path/opt/findutils/libexec/gnubin:$PATH"
+export PATH="$brew_path/opt/make/libexec/gnubin:$PATH"
+export PATH="$brew_path/opt/gnu-sed/libexec/gnubin:$PATH"
+
+export MANPATH="$brew_path/opt/coreutils/libexec/gnuman:$MANPATH"
+export MANPATH="$brew_path/opt/findutils/libexec/gnuman:$MANPATH"
+export MANPATH="$brew_path/opt/make/libexec/gnuman:$MANPATH"
+export MANPATH="$brew_path/opt/gnu-sed/libexec/gnuman:$MANPATH"

@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+
+# Bash wrappers for docker run commands
+
+dc_cleanup() {
+    local containers
+    mapfile -t containers < <(docker ps -aq 2>/dev/null)
+    docker rm "${containers[@]}" 2>/dev/null
+
+    local volumes
+    mapfile -t volumes < <(docker ps --filter status=exited -q 2>/dev/null)
+    docker rm -v "${volumes[@]}" 2>/dev/null
+
+    local images
+    mapfile -t images < <(docker images --filter dangling=true -q 2>/dev/null)
+    docker rmi "${images[@]}" 2>/dev/null
+}
+
+del_stopped() {
+	local name=$1
+	local state
+	state=$(docker inspect --format "{{.State.Running}}" "$name" 2>/dev/null)
+
+	if [[ "$state" == "false" ]]; then
+		docker rm "$name"
+	fi
+}
+
+relies_on(){
+	for container in "$@"; do
+		local state
+		state=$(docker inspect --format "{{.State.Running}}" "$container" 2>/dev/null)
+
+		if [[ "$state" == "false" ]] || [[ "$state" == "" ]]; then
+			echo "$container is not running, starting it for you."
+			$container
+		fi
+	done
+}
+
+cadvisor(){
+    del_stopped cadvisor
+
+	docker run -d \
+		--restart always \
+		-v /:/rootfs:ro \
+		-v /var/run:/var/run:rw \
+		-v /sys:/sys:ro  \
+		-v /var/lib/docker/:/var/lib/docker:ro \
+		-p 9500:8080 \
+		--name cadvisor \
+		google/cadvisor
+}
+
+consul() {
+    del_stopped consul
+
+	# check if we passed args and if consul is running
+	local state
+	state=$(docker inspect --format "{{.State.Running}}" consul 2>/dev/null)
+	if [[ "$state" == "true" ]] && [[ "$*" != "" ]]; then
+		docker exec -it consul consul "$@"
+		return 0
+	fi
+
+    docker run -d \
+    --restart always \
+    -p 8500:8500 \
+    -p 8600:8600/udp \
+    --name consul \
+    consul agent \
+    -server \
+    -ui \
+    -node=consul-server \
+    -bootstrap-expect=1 \
+    -datacenter neverland \
+    -client=0.0.0.0
+}
+
+redis() {
+    del_stopped redis
+
+    docker run -d \
+    --restart always \
+    -v /docker/redis-data:/data \
+    -p 6379:6379 \
+    --name redis \
+    redis \
+    redis-server \
+    --appendonly yes
+}
+
+rethinkdb() {
+    del_stopped rethinkdb
+
+    docker run -d \
+    -v "$HOME/rethinkdb_data:/data" \
+    --name rethinkdb
+    rethinkdb
+}

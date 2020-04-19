@@ -1,0 +1,9 @@
+[aws]
+disabled = true
+
+[docker_context]
+only_with_files = true
+
+[hostname]
+prefix = "⟪"
+suffix = "⟫"
