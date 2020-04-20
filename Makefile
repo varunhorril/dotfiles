@@ -12,19 +12,24 @@ bin: ## install the bin directory files
 .PHONY: setup
 setup: ## setup homebrew, starship bash prompt & vim
 
-	# install homebrew & homebrew packages
-	(sudo xcode-select --install && \
-	curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | sh && \
-	brew bundle)
+	# check if xcode is installed
+	@[ -f "/usr/bin/xcodebuild" ] || (xcode-select --install);
+
+	# check if homebrew is installed
+	@[ -f "/usr/local/bin/brew" ] || (curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | sh)
+
+	# install homebrew packages
+	brew bundle;
+
 
 	# install vimrc & vim-airline
 	(git clone --depth=1 https://github.com/amix/vimrc.git $(HOME)/.vim_runtime && \
 	git clone https://github.com/vim-airline/vim-airline.git $(HOME)/.vim_runtime/my_plugins/vim_airline && \
-	sh $(HOME)/.vim_runtime/install_awesome_vimrc.sh)
+	sh $(HOME)/.vim_runtime/install_awesome_vimrc.sh);
 
 	# install the starship prompt for bash
 	curl -fsSL https://starship.rs/install.sh | bash;
-	mkdir -p ~/.config && cp .config/starship.toml ~/.config
+	mkdir -p $(HOME)/.config && cp .config/starship.toml $(HOME)/.config
 
 .PHONY: dotfiles
 dotfiles: ## install the dotfiles
@@ -35,6 +40,9 @@ dotfiles: ## install the dotfiles
 
 	ln -fn $(CURDIR)/gitignore $(HOME)/.gitignore;
 	git update-index --skip-worktree $(CURDIR)/.gitconfig;
+
+	# copy mpv configurations
+	cp -r .config/mpv $(HOME)/.config
 
 .PHONY: test
 test: shellcheck ## Runs all the tests on the files in the repository.
