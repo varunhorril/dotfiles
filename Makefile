@@ -4,7 +4,7 @@ all:  ## installs the bin and the dotfiles.
 
 .PHONY: bin
 bin: ## install the bin directory files
-	for file in $(shell find $(CURDIR)/bin -type f -not -name ".*.swp"); do \
+	for file in $(shell find $(CURDIR)/.bin -type f -not -name ".*.swp"); do \
 		f=$$(basename $$file); \
 		sudo ln -sf $$file /usr/local/bin/$$ff; \
 	done
