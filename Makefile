@@ -33,7 +33,7 @@ setup: ## setup homebrew, starship bash prompt & vim
 
 .PHONY: dotfiles
 dotfiles: ## install the dotfiles
-	for file in $(shell find $(CURDIR) -name ".*" -not -name ".git" -not -name ".github" -not -name ".*.swp"); do \
+	for file in $(shell find $(CURDIR) -name ".*" -not -name ".editorconfig" -not -name ".git" -not -name ".gitignore" -not -name ".github" -not -name ".*.swp"); do \
 		f=$$(basename $$file); \
 		ln -sfn $$file $(HOME)/$$f; \
 	done; \
