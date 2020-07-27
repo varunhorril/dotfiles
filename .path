@@ -8,7 +8,7 @@ export PATH="$brew_path/sbin:$PATH"
 
 # Golang
 export GOROOT=$brew_path/opt/go/libexec
-export GOPATH=$HOME/projects/go
+export GOPATH=$HOME/.go
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOPATH
 export PATH=$PATH:$GOROOT/bin
