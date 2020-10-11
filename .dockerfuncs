@@ -92,10 +92,10 @@ prometheus() {
          -v $HOME/.prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
          -v prometheus_data:/prometheus \
          -p 9090:9090 \
-         -config.file=/etc/prometheus/prometheus.yml
-         -storage.local.path=/prometheus
-         -storage.local.memory-chunks=10000
-         prom/prometheus    
+         -config.file=/etc/prometheus/prometheus.yml \
+         -storage.local.path=/prometheus \
+         -storage.local.memory-chunks=10000 \
+         prom/prometheus
  }
 
 redis() {
@@ -116,6 +116,6 @@ rethinkdb() {
 
     docker run -d \
 	 -v "$HOME/rethinkdb_data:/data" \
-	 --name rethinkdb
+	 --name rethinkdb \
 	 rethinkdb
 }
