@@ -116,6 +116,8 @@ rethinkdb() {
 
     docker run -d \
 	 -v "$HOME/rethinkdb_data:/data" \
+     -p 28015:28015 \
+     -p 8080:8080 \
 	 --name rethinkdb \
 	 rethinkdb
 }
