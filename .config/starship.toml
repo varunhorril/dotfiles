@@ -5,5 +5,4 @@ disabled = true
 only_with_files = true
 
 [hostname]
-prefix = "⟪"
-suffix = "⟫"
+format = "⟪ [$hostname] (style) ⟫"
