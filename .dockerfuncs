@@ -81,6 +81,21 @@ consul() {
 	 -client=0.0.0.0
 }
 
+mongodb() {
+    del_stopped mongodb
+
+    docker run -d \
+        --restart always \
+        --name mongo \
+        -v $HOME/.mongodb_data:/data/db \
+        -p 27017:27017 \
+        -e MONGO_INITDB_ROOT_USERNAME=root \
+        -e MONGO_INITDB_ROOT_PASSWORD=secret \
+        mongo
+        
+
+}
+
 prometheus() {
      del_stopped prometheus
 

@@ -42,7 +42,7 @@ dotfiles: ## install the dotfiles
 	git update-index --skip-worktree $(CURDIR)/.gitconfig;
 
 	# copy mpv configurations
-	cp -r .config/mpv $(HOME)/.config
+	# cp -r .config/mpv $(HOME)/.config
 
 .PHONY: test
 test: shellcheck ## Runs all the tests on the files in the repository.
