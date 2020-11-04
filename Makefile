@@ -1,39 +1,24 @@
-.PHONY: all
-all:  ## installs the bin and the dotfiles.
-	 setup bin dotfiles
+SHELL := /bin/bash
+
+export PATH := bin:$(PATH)
+
+.DEFAULT_GOAL: setup dotfiles bin
 
 .PHONY: bin
-bin: ## install the bin directory files
-	for file in $(shell find $(CURDIR)/.bin -type f -not -name ".*.swp"); do \
+.PHONY: dotfiles
+.PHONY: help
+.PHONY: setup
+.PHONY: shellcheck
+.PHONY: test
+
+bin: ## Installs binaries from the .bin directory to /usr/local/bin
+	@for files in $(shell find $(CURDIR)/.bin -type f -not -name ".*.swp"); do \
 		f=$$(basename $$file); \
-		sudo ln -sf $$file /usr/local/bin/$$ff; \
+		sudo ln -sf $$file /usr/local/bin/$$f; \
 	done
 
-.PHONY: setup
-setup: ## setup homebrew, starship bash prompt & vim
-
-	# check if xcode is installed
-	@[ -f "/usr/bin/xcodebuild" ] || (xcode-select --install);
-
-	# check if homebrew is installed
-	@[ -f "/usr/local/bin/brew" ] || (curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | sh)
-
-	# install homebrew packages
-	brew bundle;
-
-
-	# install vimrc & vim-airline
-	(git clone --depth=1 https://github.com/amix/vimrc.git $(HOME)/.vim_runtime && \
-	git clone https://github.com/vim-airline/vim-airline.git $(HOME)/.vim_runtime/my_plugins/vim_airline && \
-	sh $(HOME)/.vim_runtime/install_awesome_vimrc.sh);
-
-	# install the starship prompt for bash
-	curl -fsSL https://starship.rs/install.sh | bash;
-	mkdir -p $(HOME)/.config && cp .config/starship.toml $(HOME)/.config
-
-.PHONY: dotfiles
-dotfiles: ## install the dotfiles
-	for file in $(shell find $(CURDIR) -name ".*" -not -name ".editorconfig" -not -name ".git" -not -name ".gitignore" -not -name ".github" -not -name ".*.swp"); do \
+dotfiles: ## Installs the dotfiles
+	@for file in $(shell find $(CURDIR) -name ".*" -not -name ".editorconfig" -not -name ".git" -not -name ".gitignore" -not -name ".github" -not -name ".*.swp"); do \
 		f=$$(basename $$file); \
 		ln -sfn $$file $(HOME)/$$f; \
 	done; \
@@ -41,27 +26,44 @@ dotfiles: ## install the dotfiles
 	ln -fn $(CURDIR)/gitignore $(HOME)/.gitignore;
 	git update-index --skip-worktree $(CURDIR)/.gitconfig;
 
-	# copy mpv configurations
-	# cp -r .config/mpv $(HOME)/.config
+	mkdir -p $(HOME)/.config;
+	ln -snf $(CURDIR)/.config/mpv $(HOME)/.config/mpv;
+	ln -snf $(CURDIR)/.config/starship.toml $(HOME)/.config/starship.toml;
 
-.PHONY: test
-test: shellcheck ## Runs all the tests on the files in the repository.
+setup: ## Installs homebrew, starship and configure vim
+	# check if xcode is installed
+	@[ -f "/usr/bin/xcodebuild" ] || (xcode-select --install);
 
-# if this session isn't interactive, then we don't want to allocate a
-# TTY, which would fail, but if it is interactive, we do want to attach
-# so that the user can send e.g. ^C through.
-INTERACTIVE := $(shell [ -t 0 ] && echo 1 || echo 0)
-ifeq ($(INTERACTIVE), 1)
-	DOCKER_FLAGS += -t
-endif
+	# check if homebrew is installed
+	@[ -f "/usr/local/bin/brew" ] || (curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | sh);
 
-.PHONY: shellcheck
-shellcheck: ## Runs the shellcheck tests on the scripts.
+	# install homebrew packages
+	brew bundle;
+
+	# install vimrc and vim-airline
+	(git clone --depth=1 https://github.com/amix/vimrc.git $(HOME)/.vim_runtime && \
+	git clone https://github.com/vim-airline/vim-airline.git $(HOME)/.vim_runtime/my_plugins/vim_airline)
+
+	sh $(HOME)/.vim_runtime/install_awesome_vimrc.sh;
+
+	# install starship (bash prompt)
+	curl -fsSL https://starship.rs/install.sh | bash;
+
+shellcheck: ## Runs the shellcheck tests on the scripts
 	docker run --rm -i $(DOCKER_FLAGS) \
 		--name df-shellcheck \
 		-v $(CURDIR):/usr/src:ro \
 		--workdir /usr/src \
 		r.j3ss.co/shellcheck ./test.sh
 
-help:   ## Show this help.
-	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
+test: shellcheck ## Runs all the tests on the files in the repo
+	# if this session isn't interactive, then we don't want to allocate a
+	# TTY, which would fail, but if it is interactive, we do want to attach
+	# so that the user can send e.g. ^C through.
+	INTERACTIVE := $(shell [ -t 0 ] && echo 1 || echo 0)
+	ifeq ($(INTERACTIVE), 1)
+		DOCKER_FLAGS += -t
+	endif
+
+help: ## Show this help screen
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
