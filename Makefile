@@ -12,7 +12,7 @@ export PATH := bin:$(PATH)
 .PHONY: test
 
 bin: ## Installs binaries from the .bin directory to /usr/local/bin
-	@for files in $(shell find $(CURDIR)/.bin -type f -not -name ".*.swp"); do \
+	@for file in $(shell find $(CURDIR)/.bin -type f -not -name ".*.swp"); do \
 		f=$$(basename $$file); \
 		sudo ln -sf $$file /usr/local/bin/$$f; \
 	done
