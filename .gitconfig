@@ -193,3 +193,5 @@
 [user]
 	email = djamseed86@gmail.com
 	name = Djamseed Khodabocus
+[init]
+	defaultBranch = main
