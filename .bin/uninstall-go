@@ -12,7 +12,7 @@ echo "/usr/local/go"
 echo "/etc/paths.d/go"
 echo ""
 
-read -p -r "Are you sure you want to proceed? [Y/n] " input
+read -p "Are you sure you want to proceed? [Y/n] " input
 
 if [[ $input =~ ^[Yy]$ ]]; then
   rm -rf /usr/local/go
