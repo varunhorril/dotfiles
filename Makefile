@@ -13,14 +13,14 @@ bin: ## Install binaries from the .bin directory to /usr/local/bin
 
 .PHONY: dotfiles
 dotfiles: ## Install dotfiles
-	@for file in $(shell find $(CURDIR) -name ".*" -not -name ".editorconfig" -not -name ".git" -not -name ".gitignore" -not -name ".github" -not -name ".*.swp"); do \
+	@for file in $(shell find $(CURDIR) -name ".*" -not -name ".editorconfig" -not -name ".config" -not -name ".bin" -not -name ".git" -not -name ".gitignore" -not -name ".github" -not -name ".*.swp"); do \
 		f=$$(basename $$file); \
 		ln -sfn $$file $(HOME)/$$f; \
 	done
 
 	ln -fn $(CURDIR)/gitignore $(HOME)/.gitignore;
 	git update-index --skip-worktree $(CURDIR)/.gitconfig;
-	[[ ! -d $(HOME)/.config ]] && mkdir -p $(HOME)/.config;
+	mkdir -p $(HOME)/.config;
 	ln -snf $(CURDIR)/.config/mpv $(HOME)/.config/mpv;
 	ln -snf $(CURDIR)/.config/starship.toml $(HOME)/.config/starship.toml;
 
