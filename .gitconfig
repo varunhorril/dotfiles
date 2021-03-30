@@ -195,3 +195,5 @@
 	name = Djamseed Khodabocus
 [init]
 	defaultBranch = main
+[pull]
+	rebase = true
