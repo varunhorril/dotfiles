@@ -30,7 +30,7 @@ export HISTIGNORE="ls:cd:cd -:pwd:exit:ls:history:date:* --help:jrnl * -h:pony:p
 export HISTFILE=$HOME/.zsh_history
 
 # Make Vim the default editor
-EDITOR=$(brew --prefix)/bin/vim
+EDITOR=$(brew --prefix)/bin/micro
 export EDITOR
 
 # Don’t clear the screen after quitting a manual page.
