@@ -31,6 +31,7 @@ alias ports='sudo lsof -i -P -n | grep LISTEN'
 alias preview='open -a Preview'
 alias ps="ps aux"
 alias r='reload'
+alias resetlaunchpad='defaults write com.apple.dock ResetLaunchPad -bool true; killall Dock'
 alias tar='tar -cvf'
 alias untar='tar -xvf'
 alias week='date +%V'
