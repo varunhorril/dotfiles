@@ -1,13 +1,15 @@
+tap "bufbuild/buf"
 tap "buo/cask-upgrade"
 tap "homebrew/bundle"
-tap "homebrew/cask"
 tap "homebrew/cask-fonts"
+tap "homebrew/cask"
 tap "homebrew/core"
 
 cask_args appdir: "/Applications"
 
 brew "bash"
 brew "bash-completion@2"
+brew "buf"
 brew "clang-format"
 brew "coreutils"
 brew "curl"
