@@ -295,8 +295,8 @@ curlheader() {
     echo "curl -k -s -D - $1 -o /dev/null"
     curl -k -s -D - "$1" -o /dev/null:
   else
-    echo "curl -k -s -D - $2 -o /dev/null | grep $1:"
-    curl -k -s -D - "$2" -o /dev/null | grep "$1":
+    echo "curl -k -s -D - $2 -o /dev/null | rg $1:"
+    curl -k -s -D - "$2" -o /dev/null | rg "$1":
   fi
 }
 
