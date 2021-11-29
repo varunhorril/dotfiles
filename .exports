@@ -29,7 +29,7 @@ export HISTIGNORE="ls:cd:cd -:pwd:exit:ls:history:date:* --help:jrnl * -h:pony:p
 # Set the location of your HISTFILE
 export HISTFILE=$HOME/.zsh_history
 
-# Make Vim the default editor
+# Make micro the default editor
 EDITOR=$(brew --prefix)/bin/micro
 export EDITOR
 

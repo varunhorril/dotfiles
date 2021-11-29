@@ -4,14 +4,12 @@ export PATH := bin:$(PATH)
 
 .DEFAULT_GOAL := dotfiles
 
-.PHONY: bin
 bin: ## Install binaries from the .bin directory to /usr/local/bin
 	@for file in $(shell find $(CURDIR)/.bin -type f -not -name ".*.swp"); do \
 		f=$$(basename $$file); \
 		sudo ln -sf $$file /usr/local/bin/$$f; \
 	done
 
-.PHONY: dotfiles
 dotfiles: ## Install dotfiles
 	@for file in $(shell find $(CURDIR) -name ".*" -not -name ".editorconfig" -not -name ".config" -not -name ".bin" -not -name ".git" -not -name ".gitignore" -not -name ".github" -not -name ".*.swp"); do \
 		f=$$(basename $$file); \
@@ -24,7 +22,6 @@ dotfiles: ## Install dotfiles
 	ln -snf $(CURDIR)/.config/mpv $(HOME)/.config/mpv;
 	ln -snf $(CURDIR)/.config/starship.toml $(HOME)/.config/starship.toml;
 
-.PHONY: setup
 setup: ## Install homebrew, starship and configure vim
 	# check if x-code is installed
 	@[ -f "/usr/bin/xcodebuild" ] || xcode-select --install;
@@ -41,7 +38,6 @@ setup: ## Install homebrew, starship and configure vim
 	# install starship (bash prompt)
 	curl -fsSL https://starship.rs/install.sh | bash;
 
-.PHONY: shellcheck
 shellcheck: ## Run the shellcheck tests on the scripts
 	docker run --rm -i $(DOCKER_FLAGS) \
 		--name df-shellcheck \
@@ -59,7 +55,7 @@ test: shellcheck ## Run all the tests on the files in the repo
 		DOCKER_FLAGS += -t
 	endif
 
-.PHONY: help
+
 help: ## Show this help screen
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
