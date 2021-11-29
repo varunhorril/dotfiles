@@ -2,7 +2,7 @@ SHELL := bash
 
 export PATH := bin:$(PATH)
 
-.DEFAULT_GOAL := setup dotfiles bin
+.DEFAULT_GOAL := dotfiles
 
 .PHONY: bin
 bin: ## Install binaries from the .bin directory to /usr/local/bin
