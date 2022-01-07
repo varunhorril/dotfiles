@@ -145,9 +145,6 @@ csharp_space_between_parentheses = false
 csharp_preserve_single_line_blocks = true
 csharp_preserve_single_line_statements = true
 
-[Makefile]
-indent_style = tab
-
 [{*.go,go.mod,go.sum,Makefile}]
 indent_style = tab
 

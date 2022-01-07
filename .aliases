@@ -97,7 +97,7 @@ alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
 alias ping='gping'
 
 # Quickly search for file
-alias search="fd -H "
+alias search="fd "
 
 # Find CPU hogs
 alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'

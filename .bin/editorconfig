@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-
-dest=$1
+set -euo pipefail
 
 cat > "$1"/.editorconfig << "EOF"
 root = true
@@ -14,7 +13,6 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 
 [{Makefile,go.mod,go.sum,*.go}]
-indent_size = 8
 indent_style = tab
 
 [*.md]
@@ -23,5 +21,4 @@ trim_trailing_whitespace = false
 
 [Dockerfile]
 indent_size = 4
-
 EOF
