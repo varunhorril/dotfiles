@@ -15,7 +15,7 @@ alias console='tee -a ~/console.log'
 alias cp='cp -i'
 alias cwd='pwd | tr -d "\r\n" | pbcopy'
 alias du="dust -n 30"
-alias fd="fd -h"
+alias fd="fd -H"
 alias finder='open -a Finder ./'
 alias fzf="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
 alias grep="rg"
@@ -63,7 +63,7 @@ alias speedup='sudo rm -rf /private/var/log/asl/*'
 alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; speedup; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'"
 
 # Recursively delete .DS_Store files
-alias cleanupds="fd . -g '*.DS_Store' -ls -delete"
+alias cleanupds="fd -g '*.DS_Store' . -x rm -v"
 
 # Clean up LaunchServices to remove duplicates in the “Open With” menu
 alias cleanupls="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
