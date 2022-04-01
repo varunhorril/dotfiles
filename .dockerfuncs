@@ -54,6 +54,20 @@ cadvisor(){
         google/cadvisor
 }
 
+cockroachdb() {
+    del_stopped cockroachdb
+
+    docker volume create cockroach_data
+
+    docker run -d \
+        --restart always \
+        -v cockroach_data:/cockroach/cockroach-data \
+        -p 26257:26257 \
+        -p 8080:8080 \
+        --name cockroachdb \
+        cockroachdb/cockroach start-single-node --insecure
+}
+
 consul(){
 	del_stopped consul
 
@@ -100,4 +114,17 @@ prometheus() {
         -storage.local.memory-chunks=10000 \
         --name prometheus \
         prom/prometheus
+}
+
+redis() {
+    del_stopped redis
+
+    docker volume create redis_data
+
+    docker run -d \
+        --restart always \
+        -v redis_data:/data \
+        -p 6379:6379 \
+        --name redis \
+        redis-server --save 60 --requirepass pixelA1+ --loglevel warning
 }
