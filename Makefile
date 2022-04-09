@@ -31,7 +31,7 @@ setup: ## Install homebrew, starship and configure vim
 	brew bundle;
 
 	# install starship (bash prompt)
-	curl -fsSL https://starship.rs/install.sh | bash;
+	curl -fsSL https://starship.rs/install.sh | sh;
 
 shellcheck: ## Run the shellcheck tests on the scripts
 	docker run --rm -i $(DOCKER_FLAGS) \
