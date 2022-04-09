@@ -30,11 +30,6 @@ setup: ## Install homebrew, starship and configure vim
 	@[ -f "/usr/local/bin/brew" ] || (curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | sh);
 	brew bundle;
 
-	# install vimrc and vim-airline
-	git clone --depth=1 https://github.com/amix/vimrc.git $(HOME)/.vim_runtime && \
-		git clone https://github.com/vim-airline/vim-airline.git $(HOME)/.vim_runtime/my_plugins/vim_airline && \
-		bash $(HOME)/.vim_runtime/install_awesome_vimrc.sh
-
 	# install starship (bash prompt)
 	curl -fsSL https://starship.rs/install.sh | bash;
 
@@ -43,7 +38,6 @@ shellcheck: ## Run the shellcheck tests on the scripts
 		--name df-shellcheck \
 		-v $(CURDIR):/usr/src:ro \
 		--workdir /usr/src r.j3ss.co/shellcheck ./test.sh
-
 
 .PHONY: test
 test: shellcheck ## Run all the tests on the files in the repo
