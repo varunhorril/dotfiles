@@ -223,7 +223,7 @@ logout() {
 
 # List processes owned by an user
 myps() {
-    ps "$@" -u "$USER" -o pid,%cpu,%mem,start,time,bsdtime,command;
+    ps "$@" u "$USER" -o pid,%cpu,%mem,start,time,bsdtime,command;
 }
 
 # Open any file in MacOS Quicklook Preview
@@ -262,7 +262,8 @@ sshkeygen() {
 # `less` with options to preserve color and line numbers, unless the output is
 # small enough for one screen.
 tre() {
-	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRnX;
+	#tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRnX;
+	exa --all --tree --color always --ignore-glob '.git|node_modules' --group-directories-first | bat;
 }
 
 ## hammer a service with curl for a given number of times
