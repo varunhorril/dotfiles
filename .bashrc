@@ -6,7 +6,7 @@ case $- in
 	*) return;;
 esac
 
-for file in ~/.{aliases,dockerfuncs,exports,extra,functions,path}; do
+for file in ~/.{aliases,dockerfuncs,exports,extra,functions,path,vimrc}; do
 	if [[ -r "$file" ]] && [[ -f "$file" ]]; then
 		# shellcheck source=/dev/null
 		source "$file"
