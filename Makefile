@@ -21,6 +21,7 @@ dotfiles: ## Install dotfiles
 	mkdir -p $(HOME)/.config;
 	ln -snf $(CURDIR)/.config/mpv $(HOME)/.config/mpv;
 	ln -snf $(CURDIR)/.config/starship.toml $(HOME)/.config/starship.toml;
+	ln -snf $(CURDIR)/vimrc $(HOME)/.vimrc
 
 setup: ## Install homebrew, starship and configure vim
 	# check if x-code is installed
@@ -29,6 +30,10 @@ setup: ## Install homebrew, starship and configure vim
 	# check if homebrew is installed && install brew packages
 	@[ -f "/usr/local/bin/brew" ] || (curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | sh);
 	brew bundle;
+
+	# install vim-plug
+	@[ ! -f "~/.vim/autoload/vim.plug" ] && curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+	    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 	# install starship (bash prompt)
 	curl -fsSL https://starship.rs/install.sh | sh;
