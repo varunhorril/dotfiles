@@ -429,8 +429,16 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin()
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'itmammoth/doorboy.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'NLKNguyen/papercolor-theme'
 call plug#end()
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Beautify vim-go
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:go_highlight_types = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
