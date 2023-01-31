@@ -47,6 +47,7 @@ brew "ruby"
 brew "sd"
 brew "subversion"
 brew "tldr"
+brew "tmux"
 brew "tree"
 brew "xh"
 
