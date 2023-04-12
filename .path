@@ -34,3 +34,6 @@ export MANPATH="$brew_path/opt/coreutils/libexec/gnuman:$MANPATH"
 export MANPATH="$brew_path/opt/findutils/libexec/gnuman:$MANPATH"
 export MANPATH="$brew_path/opt/make/libexec/gnuman:$MANPATH"
 export MANPATH="$brew_path/opt/gnu-sed/libexec/gnuman:$MANPATH"
+
+# Docker
+export PATH="$HOME/.docker/bin:$PATH"
