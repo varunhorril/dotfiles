@@ -36,7 +36,7 @@ export MANPATH="$brew_path/opt/make/libexec/gnuman:$MANPATH"
 export MANPATH="$brew_path/opt/gnu-sed/libexec/gnuman:$MANPATH"
 
 # Docker
-export PATH="$HOME/.docker/bin:$PATH"
+export PATH="/Applications/Docker.app/Contents/Resources/bin/:$PATH"
 
 # Poetry
 export PATH="$HOME/.local/bin:$PATH"
