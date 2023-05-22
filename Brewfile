@@ -42,6 +42,7 @@ brew "tldr"
 brew "tmux"
 brew "xh"
 
+cask "1password"
 cask "brave-browser"
 cask "cleanmymac"
 cask "docker"
