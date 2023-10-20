@@ -37,6 +37,7 @@ alias resetlaunchpad='defaults write com.apple.dock ResetLaunchPad -bool true; k
 alias tar='tar -cvf'
 alias untar='tar -xvf'
 alias week='date +%V'
+alias vim='nvim'
 alias zap='rm -i'
 
 # Quicker navigation
