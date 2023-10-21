@@ -168,6 +168,7 @@
 [merge]
 	# Include summaries of merged commits in newly created merge commit messages
 	log = true
+	conflictstyle = diff3
 
 [pull]
 	rebase = true
