@@ -20,6 +20,7 @@ dotfiles: ## Install dotfiles
 	git update-index --skip-worktree $(CURDIR)/.gitconfig;
 	mkdir -p $(HOME)/.config;
 	ln -snf $(CURDIR)/.config/mpv $(HOME)/.config/mpv;
+	ln -snf $(CURDIR)/.config/nvim $(HOME)/.config/nvim;
 	ln -snf $(CURDIR)/.config/starship.toml $(HOME)/.config/starship.toml;
 
 setup: ## Install homebrew and starship

@@ -50,7 +50,7 @@ alias .5='cd ../../../../../'       # Go back 5 directory levels
 alias .6='cd ../../../../../../'    # Go back 6 directory levels
 
 # Get macOS Software Updates, and update installed Homebrew, npm, and their installed packages
-alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cu --all; brew cleanup; brew cu --cleanup; brew doctor; npm install npm -g; npm update -g'
+alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cu --all; brew cleanup; brew cu --cleanup; brew doctor'
 
 # Shorter commands for `Homebrew`
 alias brewupdate='brew update && brew upgrade && brew cleanup && brew doctor'
