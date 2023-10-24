@@ -100,13 +100,6 @@ fs() {
 	fi
 }
 
-# Use Git’s colored diff when available
-if hash git &>/dev/null ; then
-	diff() {
-		git diff --no-index --color-words "$@"
-	}
-fi
-
 # Get colors in manual pages
 man() {
 	env \
@@ -243,27 +236,25 @@ httpserver() {
 
 # Generate SSH RSA keys
 sshkeygen() {
-
 	echo "What's the name of the Key (no spaced please) ? ";
 	read -r name;
-
 	echo "What's the email associated with it? ";
 	read -r email;
 
-	ssh-keygen -t rsa -b 4096 -N "" -f ~/.ssh/"$name" -C "$email"
+	ssh-keygen -t ed25519 -N "" -f ~/.ssh/"$name" -C "$email"
 	ssh-add ~/.ssh/"$name";
 	pbcopy < ~/.ssh/"$name".pub;
 
 	echo "SSH Key copied in your clipboard";
 }
 
-# `tre` is a shorthand for `tree` with hidden files and color enabled, ignoring
+# `tre` display a tree structure with hidden files and color enabled, ignoring
 # the `.git` directory, listing directories first. The output gets piped into
-# `less` with options to preserve color and line numbers, unless the output is
+# `bat` with options to preserve color and line numbers, unless the output is
 # small enough for one screen.
 tre() {
 	#tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRnX;
-	exa --all --tree --color always --ignore-glob '.git|node_modules' --group-directories-first | bat;
+	eza --all --tree --color always --ignore-glob '.git|node_modules' --group-directories-first | bat;
 }
 
 ## hammer a service with curl for a given number of times

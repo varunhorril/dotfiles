@@ -29,8 +29,8 @@ export HISTIGNORE="ls:cd:cd -:pwd:exit:ls:history:date:* --help:jrnl * -h:pony:p
 # Set the location of your HISTFILE
 export HISTFILE=$HOME/.zsh_history
 
-# Make micro the default editor
-EDITOR=$(brew --prefix)/bin/micro
+# Make Neovim the default editor
+EDITOR=$(brew --prefix)/bin/nvim
 export EDITOR
 
 # Don’t clear the screen after quitting a manual page.

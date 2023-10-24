@@ -2,11 +2,8 @@
 
 # shellcheck disable=SC2139
 
-# Allow aliases to be with sudo
+# Allow aliases to be sudo'ed
 alias sudo='sudo '
-
-# Reload the shell (i.e. invoke as a login shell)
-alias reload='exec ${SHELL} -l'
 
 # Generic aliases
 alias c='clear'
@@ -14,33 +11,34 @@ alias cat='bat'
 alias console='tee -a ~/console.log'
 alias cp='cp -i'
 alias cwd='pwd | tr -d "\r\n" | pbcopy'
-alias du="dust -n 30"
-alias fd="fd -H"
+alias du='dust -n 30'
+alias fd='fd -H'
 alias finder='open -a Finder ./'
 alias fzf="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
-alias grep="rg"
+alias grep='rg'
 alias h='history'
-alias la="exa -abghHl --group-directories-first"
+alias la="eza -abghHl --group-directories-first"
 alias less='less -R'
 alias locale='locale -a | grep UTF-8'
-alias lr='exa -T -L 5 --git-ignore'
-alias lsd="exa -laDh"
+alias lr='eza -T -L 5 --git-ignore'
+alias lsd="eza -laDh"
 alias mkdir='mkdir -pv'
 alias mv='mv -i'
-alias p='pwd'
 alias path='echo -e ${PATH//:/\\n}'
+alias ping='gping'
 alias ports='sudo lsof -i -P -n | rg LISTEN'
 alias preview='open -a Preview'
-alias ps="procs"
-alias r='reload'
-alias resetlaunchpad='defaults write com.apple.dock ResetLaunchPad -bool true; killall Dock'
+alias ps='procs'
+alias r='exec ${SHELL} -l'
+alias search='fd '
 alias tar='tar -cvf'
+alias top='top -R -F -s 10 -o rsize'
 alias untar='tar -xvf'
 alias week='date +%V'
 alias vim='nvim'
 alias zap='rm -i'
 
-# Quicker navigation
+# Quicker navigations
 alias ~='cd ~'
 alias ..='cd ../'                   # Go back 1 directory level
 alias ...='cd ../../'               # Go back 2 directory levels
@@ -49,32 +47,28 @@ alias .4='cd ../../../../'          # Go back 4 directory levels
 alias .5='cd ../../../../../'       # Go back 5 directory levels
 alias .6='cd ../../../../../../'    # Go back 6 directory levels
 
-# Get macOS Software Updates, and update installed Homebrew, npm, and their installed packages
-alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cu --all; brew cleanup; brew cu --cleanup; brew doctor'
-
-# Shorter commands for `Homebrew`
-alias brewupdate='brew update && brew upgrade && brew cleanup && brew doctor'
-alias caskupdate='brew cu --all && brew cu --cleanup;'
-
-# Speed-up Terminal load time by clearing system logs
-alias speedup='sudo rm -rf /private/var/log/asl/*'
-
-# Empty the trash on all mounted volumes and the main HDD
-# Also, clear Apple’s System Logs to improve shell startup speed
-alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; speedup; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'"
-
 # Recursively delete .DS_Store files
 alias cleanupds="fd -g '*.DS_Store' . -x rm -v"
 
 # Clean up LaunchServices to remove duplicates in the “Open With” menu
 alias cleanupls="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
 
-# Show/hide hidden files in finder
-alias hidefiles='defaults write com.apple.finder AppleShowAllFiles -int 0 && killall Finder'
-alias showfiles='defaults write com.apple.finder AppleShowAllFiles -int 1 && killall Finder'
+# Empty the trash on all mounted volumes and the main HDD
+# Also, clear Apple’s System Logs to improve shell startup speed
+alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; speedup; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'"
 
-# Recommended 'top' invocation to minimize resources
-alias top='top -R -F -s 10 -o rsize'
+# Speed-up Terminal load time by clearing system logs
+alias speedup='sudo rm -rf /private/var/log/asl/*'
+
+# Upgrade `Homebrew` packages
+alias brewupdate='brew update && brew upgrade && brew cleanup; brew cu --all && brew cu --cleanup && brew doctor'
+
+# Get macOS software update
+alias update='sudo softwareupdate -i -a'
+
+# Pipe public & private keys to the clipboard
+alias pubkey="pbcopy < ~/.ssh/id_rsa.pub | echo '=> Public key copied to clipboard.'"
+alias prikey="pbcopy < ~/.ssh/id_rsa | echo '=> Private key copied to clipboard.'"
 
 # Networking
 alias flushdns='sudo dscacheutil -flushcache && killall -HUP mDNSResponder'                  # flushDNS:     Flush out the DNS Cache
@@ -94,34 +88,5 @@ alias pubip='curl -s checkip.dyndns.org | sed -e "s/.*Current IP Address: //" -e
 alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
 alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
 
-# Limit Ping to 5 ECHO_REQUEST packets
-alias ping='gping'
-
-# Quickly search for file
-alias search="fd "
-
-# Find CPU hogs
-alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'
-
-# Find memory hogs
-alias memhogs_ps='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10'
-alias memhogs_top='top -l 1 -o rsize | head -20'
-
-# URL encode strings
-alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'
-
-# Merge PDF files
-# Usage: `mergepdf -o output.pdf input{1,2,3}.pdf`
-alias mergepdf='/System/Library/Automator/Combine\ PDF\ Pages.action/Contents/Resources/join.py'
-
-# Intuitive map function
-# For example, to list all directories that contain a certain file:
-# find . -name .gitattributes | map dirname
-alias map="xargs -n1"
-
 # Lock the screen when away from keyboard
 alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
-
-# Pipe public & private keys to the clipboard
-alias pubkey="pbcopy < ~/.ssh/id_rsa.pub | echo '=> Public key copied to clipboard.'"
-alias prikey="pbcopy < ~/.ssh/id_rsa | echo '=> Private key copied to clipboard.'"

@@ -10,6 +10,15 @@ sudo -v
 # Keep-alive: update existing `sudo` time stamp until `macos` has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
+# Enable dark mode
+defaults write NSGlobalDomain AppleInterfaceStyle -string "Dark"
+defaults write NSGlobalDomain AppleAccentColor -string "-1"
+defaults write NSGlobalDomain AppleHighlightColor -string \
+  "0.847059 0.847059 0.862745 Graphite"
+
+# Prefer Finder tabs: Dock -> Prefer tabs when opening documents
+defaults write NSGlobalDomain AppleWindowTabbingMode -string "always"
+
 # Finder, Preferences, General
 # [x] Quit Finder with ⌘ + Q
 # [x] Disable animations
@@ -98,17 +107,29 @@ defaults write com.apple.dock minimize-to-application -int 1
 defaults write com.apple.dock autohide -int 1
 defaults write com.apple.dock show-process-indicators -int 1
 
+# Remove the auto-hiding Dock delay
+defaults write com.apple.dock autohide-delay -float 0
+
+# Don’t show recent applications in Dock
+defaults write com.apple.dock show-recents -bool false
+
 # Reset Launchpad, but keep the desktop wallpaper intact
 find "${HOME}/Library/Application Support/Dock" -name "*-*.db" -maxdepth 1 -delete
+
+# Wipe default macOS app icons from the Dock
+# Useful for setting up new Macs. Optionally relaunch dock with `killall Dock`.
+defaults write com.apple.dock persistent-apps -array
 
 # System Preferences, Mission Control
 # [ ] Rearrange spaces based on most recent use
 # Expose animation duration: 0.1
 # [ ] Dashboard
+# [x] Group windows by application
 # [ ] Show dashboard on spaces
 defaults write com.apple.dock mru-spaces -int 0
 defaults write com.apple.dock expose-animation-duration -float 0.1
 defaults write com.apple.dashboard mcx-disabled -int 1
+defaults write com.apple.dock expose-group-by-app -int 1
 defaults write com.apple.dock dashboard-in-overlay -int 1
 
 # System Preferences, Spotlight
@@ -393,13 +414,26 @@ defaults write com.googlecode.iterm2 PromptOnQuit -int 0
 # Copy email addresses as `foo@example.com` instead of `Foo Bar <foo@example.com>` in Mail.app
 defaults write com.apple.mail AddressesIncludeNameOnPasteboard -bool false
 
+# Disable send and reply animations in Mail.app
+defaults write com.apple.mail DisableReplyAnimations -bool true
+defaults write com.apple.mail DisableSendAnimations -bool true
+
 # Add the keyboard shortcut ⌘ + Enter to send an email in Mail.app
 defaults write com.apple.mail NSUserKeyEquivalents -dict-add "Send" "@\U21a9"
+
+# Most recent first
+defaults write com.apple.mail ConversationViewSortDescending -bool true
 
 # Display emails in threaded mode, sorted by date (oldest at the top)
 defaults write com.apple.mail DraftsViewerAttributes -dict-add "DisplayInThreadedMode" -string "yes"
 defaults write com.apple.mail DraftsViewerAttributes -dict-add "SortedDescending" -string "yes"
 defaults write com.apple.mail DraftsViewerAttributes -dict-add "SortOrder" -string "received-date"
+
+# Disable inline attachments (just show the icons)
+defaults write com.apple.mail DisableInlineAttachmentViewing -bool true
+
+# Disable remote content
+defaults write com.apple.mail DisableURLLoading -bool true
 
 # Messages
 # [ ] Smart quotes
@@ -473,6 +507,38 @@ defaults write com.apple.Safari ShowStatusBar -int 1
 defaults write com.apple.TextEdit RichText -int 0
 defaults write com.apple.TextEdit PlainTextEncoding -int 4
 defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
+
+# Transmission
+defaults write org.m0k.transmission AutoSize -bool false
+defaults write org.m0k.transmission AutoStartDownload -bool true
+defaults write org.m0k.transmission BlocklistAutoUpdate -bool true
+defaults write org.m0k.transmission BlocklistURL -string \
+  "https://github.com/Naunter/BT_BlockLists/raw/master/bt_blocklists.gz"
+defaults write org.m0k.transmission CheckDownload -bool false
+defaults write org.m0k.transmission CheckQuit -bool false
+defaults write org.m0k.transmission CheckRemove -bool true
+defaults write org.m0k.transmission CheckRemoveDownloading -bool true
+defaults write org.m0k.transmission CheckUpload -bool false
+defaults write org.m0k.transmission DeleteOriginalTorrent -bool false
+defaults write org.m0k.transmission DisplayProgressBarAvailable -bool true
+defaults write org.m0k.transmission DownloadAsk -bool true
+defaults write org.m0k.transmission DownloadAskManual -bool false
+defaults write org.m0k.transmission DownloadAskMulti -bool false
+defaults write org.m0k.transmission DownloadLocationConstant -bool false
+defaults write org.m0k.transmission EncryptionRequire -bool true
+defaults write org.m0k.transmission MagnetOpenAsk -bool false
+defaults write org.m0k.transmission PeersTorrent -int 10
+defaults write org.m0k.transmission PeersTotal -int 200
+defaults write org.m0k.transmission PlayDownloadSound -bool false
+defaults write org.m0k.transmission RandomPort -bool false
+defaults write org.m0k.transmission SleepPrevent -bool true
+defaults write org.m0k.transmission SmallView -bool true
+defaults write org.m0k.transmission SpeedLimitDownloadLimit -int 2000
+defaults write org.m0k.transmission SpeedLimitUploadLimit -int 1000
+defaults write org.m0k.transmission SUEnableAutomaticChecks -bool false
+defaults write org.m0k.transmission UseIncompleteDownloadFolder -bool false
+defaults write org.m0k.transmission WarningDonate -bool false
+defaults write org.m0k.transmission WarningLegal -bool false
 
 # Kill affected applications
 for app in "Activity Monitor" \

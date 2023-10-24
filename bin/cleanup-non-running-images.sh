@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -euo pipefail
 ##############################################################################
 # cleanup-non-running-images
 # -----------
@@ -9,6 +8,10 @@ set -euo pipefail
 # :date: 15 May 2016
 # :version: 0.0.1
 ##############################################################################
+
+set -e
+set -o pipefail
+
 main(){
 	mapfile -t images < <(docker images -q --no-trunc)
 	for c in $(docker ps -aq); do

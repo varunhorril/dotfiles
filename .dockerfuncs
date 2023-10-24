@@ -13,6 +13,7 @@ dcleanup(){
 	mapfile -t images < <(docker images --filter dangling=true -q 2>/dev/null)
 	docker rmi "${images[@]}" 2>/dev/null
 }
+
 del_stopped(){
 	local name=$1
 	local state
@@ -22,10 +23,12 @@ del_stopped(){
 		docker rm "$name"
 	fi
 }
+
 rmctr(){
 	# shellcheck disable=SC2068
 	docker rm -f $@ 2>/dev/null || true
 }
+
 relies_on(){
 	for container in "$@"; do
 		local state
@@ -42,21 +45,8 @@ dps() {
 	docker ps -a --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}\t{{.ID}}'
 }
 
-cadvisor(){
-    docker run -d \
-        --restart always \
-		-v /:/rootfs:ro \
-		-v /var/run:/var/run:rw \
-		-v /sys:/sys:ro  \
-		-v /var/lib/docker/:/var/lib/docker:ro \
-        -p 9090:8080 \
-        --name cadvisor \
-        google/cadvisor
-}
-
 cockroachdb() {
     del_stopped cockroachdb
-
     docker volume create cockroach_data
 
     docker run -d \
@@ -68,25 +58,6 @@ cockroachdb() {
         cockroachdb/cockroach start-single-node --insecure
 }
 
-consul(){
-	del_stopped consul
-
-	# check if we passed args and if consul is running
-	local state
-	state=$(docker inspect --format "{{.State.Running}}" consul 2>/dev/null)
-	if [[ "$state" == "true" ]] && [[ "$*" != "" ]]; then
-		docker exec -it consul consul "$@"
-		return 0
-	fi
-
-	docker run -d \
-		--restart always \
-        -p 8500:8500 \
-        -p 8600:8600/udp \
-		--name consul \
-        consul agent -server -ui -node=consul-server -bootstrap-expect=1 -datacenter=acme -client=0.0.0.0
-}
-
 mongodb() {
     del_stopped mongodb
 
@@ -94,19 +65,18 @@ mongodb() {
         --restart always \
         -e MONGO_INITDB_ROOT_USERNAME=root \
         -e MONGO_INITDB_ROOT_PASSWORD=admin\
-        -v $HOME/.mongodb_data:/data/db \
+        -v "$HOME"/.mongodb_data:/data/db \
         -p 27017:27017 \
         mongo
 }
 
 prometheus() {
     del_stopped prometheus
-
     docker volume create prometheus_data
 
     docker run -d \
-        --restart always
-        -v $HOME/.prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
+        --restart always \
+        -v "$HOME"/.prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
         -v prometheus_data:/prometheus \
         -p 9090:9090 \
         -config.file=/etc/prometheus/prometheus.yml \
@@ -118,7 +88,6 @@ prometheus() {
 
 redis() {
     del_stopped redis
-
     docker volume create redis_data
 
     docker run -d \
