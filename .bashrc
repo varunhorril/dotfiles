@@ -46,5 +46,9 @@ elif [ -f /etc/bash_completion ]; then
 	source /etc/bash_completion;
 fi;
 
+# starship prompt
 eval "$(starship init bash)"
+
+# pyenv
+eval "$(pyenv init -)"
 
