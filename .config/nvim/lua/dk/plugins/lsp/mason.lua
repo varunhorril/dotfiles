@@ -27,7 +27,8 @@ return {
                 "gopls",
                 "lua_ls",
                 "pyright",
-                "rust_analyzer"
+                "ruff_lsp",
+                "rust_analyzer",
             },
             -- auto-install configured servers (with lspconfig)
             automatic_installation = true, -- not the same as ensure_installed
@@ -36,14 +37,13 @@ return {
         -- List of tools/formatters/linters to install
         mason_tool_installer.setup({
             ensure_installed = {
-                "black",     -- Python formatter
-                "gofumpt",   -- Stricter Go formatter (gofmt)
+                "gofumpt", -- Stricter Go formatter (gofmt)
                 "goimports", -- Go imports formatter
-                "isort",     -- Python imports formatter
-                "prettier",  -- Opiniated code formatter
-                "pylint",    -- Python linter
-                "stylua",    -- Lua formatter
+                "isort", -- Python imports formatter
+                "prettier", -- Opiniated code formatter
+                "ruff", -- Python linter and formatter
+                "stylua", -- Lua formatter
             },
         })
-    end
+    end,
 }

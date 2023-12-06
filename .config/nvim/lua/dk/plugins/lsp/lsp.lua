@@ -2,7 +2,7 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",
-        { "j-hui/fidget.nvim", opts = {} }
+        { "j-hui/fidget.nvim", opts = {} },
     },
     event = "VeryLazy",
     config = function()
@@ -26,8 +26,9 @@ return {
             keymap("<C-k>", vim.lsp.buf.signature_help, "Signature Documentation")
 
             -- Command `:Format` local to the LSP buffer
-            vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_) vim.lsp.buf.format() end,
-                { desc = 'Format current buffer with LSP' })
+            vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
+                vim.lsp.buf.format()
+            end, { desc = "Format current buffer with LSP" })
         end
 
         -- Change the Diagnostic symbols in the sign column
@@ -36,7 +37,6 @@ return {
             local hl = "DiagnosticSign" .. type
             vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
         end
-
 
         local lspconfig = require("lspconfig")
         local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
@@ -54,7 +54,7 @@ return {
                     analyses = {
                         nilness = true,
                         useany = true,
-                        unusedparams = true
+                        unusedparams = true,
                     },
                     codelenses = {
                         gc_details = false,
@@ -100,6 +100,12 @@ return {
             },
         })
 
+        -- Configure ruff-lsp
+        lspconfig.ruff_lsp.setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+        })
+
         -- Configure pyright
         lspconfig.pyright.setup({
             capabilities = capabilities,
@@ -111,8 +117,11 @@ return {
             capabilities = capabilities,
             on_attach = on_attach,
             cmd = {
-                "rustup", "run", "stable", "rust-analyzer",
-            }
+                "rustup",
+                "run",
+                "stable",
+                "rust-analyzer",
+            },
         })
-    end
+    end,
 }
